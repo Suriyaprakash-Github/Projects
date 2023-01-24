@@ -1,22 +1,27 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
+
 import Modal from "../UI/Modal";
-import CartCntxt from "../../store/cart-context";
 import CartItem from "./CartItem";
 import classes from "./Cart.module.css";
+import CartContext from "../../store/cart-context";
 
 const Cart = (props) => {
-  const cartcntx = useContext(CartCntxt);
+  const cartCtx = useContext(CartContext);
 
-  const totalAmount = `$${cartcntx.totalAmount.toFixed(2)}`;
-  const hasItems = cartcntx.items.length > 0;
+  const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
+  const hasItems = cartCtx.items.length > 0;
 
-  const cartItemRemoveHandler = (id) => {};
+  const cartItemRemoveHandler = (id) => {
+    cartCtx.removeItem(id);
+  };
 
-  const cartItemAddHandler = (item) => {};
+  const cartItemAddHandler = (item) => {
+    cartCtx.addItem({ ...item, amount: 1 });
+  };
 
   const cartItems = (
     <ul className={classes["cart-items"]}>
-      {cartcntx.items.map((item) => (
+      {cartCtx.items.map((item) => (
         <CartItem
           key={item.id}
           name={item.name}
